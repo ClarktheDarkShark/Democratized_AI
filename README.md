@@ -25,6 +25,7 @@ This repository contains a minimal but production-quality skeleton for an IL4/IL
 2. `make dev` – starts Postgres, Redis, API, worker and frontend.
 3. Visit http://localhost:3000 for the UI or http://localhost:8000/docs for API docs.
 
+
 ## Deploy to Heroku
 The backend (API + worker) can be deployed using the included `heroku.yml`:
 
@@ -54,6 +55,8 @@ heroku config:set NEXT_PUBLIC_API_URL=https://agentic-platform-api.herokuapp.com
 heroku container:push web -a agentic-platform-frontend
 heroku container:release web -a agentic-platform-frontend
 ```
+
+=======
 
 ## Environment Variables
 | Variable | Description |
