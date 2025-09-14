@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 from sqlalchemy.orm import Session
 
 from ...core.auth import require_roles
@@ -15,6 +15,6 @@ def ingest_docs(texts: List[str], db: Session = Depends(get_db)):
     return {"ids": ids}
 
 @router.post("/query", dependencies=[Depends(require_roles(["operator", "admin"]))])
-def query_docs(query: str, db: Session = Depends(get_db)):
+def query_docs(query: str = Body(...), db: Session = Depends(get_db)):
     passages = retrieve.query(db, query)
     return {"passages": passages}
