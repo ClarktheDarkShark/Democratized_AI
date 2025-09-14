@@ -1,0 +1,12 @@
+name: backend
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install fastapi uvicorn[standard] pydantic pydantic-settings sqlalchemy psycopg2-binary alembic redis rq openai sentence-transformers httpx pyjwt pytest
+      - run: pytest backend
