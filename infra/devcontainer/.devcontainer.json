@@ -1,0 +1,9 @@
+{
+  "name": "agentic-platform",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "api",
+  "workspaceFolder": "/workspace/Democratized_AI",
+  "settings": {},
+  "extensions": ["ms-python.python", "ms-vscode.vscode-typescript-next"],
+  "postCreateCommand": "pip install -e backend && npm install --prefix frontend"
+}
