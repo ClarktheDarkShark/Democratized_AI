@@ -1,4 +1,3 @@
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
@@ -6,31 +5,34 @@ from sqlalchemy.pool import StaticPool
 
 from .config import settings
 
-DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Heroku gives postgres:// but SQLAlchemy needs postgresql:// (or postgresql+psycopg://)
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+def _create_engine():
+    """Create a SQLAlchemy engine, falling back to in-memory SQLite when
+    the configured database is unreachable.  This keeps unit tests fast and
+    avoids import-time failures when Postgres isn't available."""
 
-engine = create_engine(
-    DATABASE_URL,
-    echo=False,
-    pool_pre_ping=True,   # helps avoid stale connections on Heroku
-    future=True,
-)
-try:
-    with engine.connect():
-        pass
-except OperationalError:
-    DATABASE_URL = "sqlite+pysqlite:///:memory:"
-    engine = create_engine(
-        DATABASE_URL,
-        echo=False,
-        future=True,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
+    url = settings.database_url
+    try:
+        engine = create_engine(
+            url,
+            echo=False,
+            pool_pre_ping=True,
+            future=True,
+        )
+        with engine.connect():
+            pass
+        return engine
+    except Exception:  # pragma: no cover - fallback for tests
+        return create_engine(
+            "sqlite+pysqlite:///:memory:",
+            echo=False,
+            future=True,
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+        )
 
+
+engine = _create_engine()
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 def get_db():

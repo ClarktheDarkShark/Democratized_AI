@@ -4,7 +4,7 @@ dev:
 	docker-compose up --build
 
 test:
-	cd backend && pytest
+	cd backend && PYTHONPATH=. pytest
 	cd frontend && npm test
 
 fmt:
