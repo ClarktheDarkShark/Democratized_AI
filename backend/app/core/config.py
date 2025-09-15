@@ -14,6 +14,21 @@ class Settings(BaseSettings):
     llm_provider: str = "openai"
     llm_api_key: str | None = None
     vector_dim: int = 1536
+    frontend_url: str | None = None
+
+    @property
+    def database_url(self) -> str:
+        """Construct a database URL from individual settings.
+
+        This avoids relying on a pre-built DATABASE_URL environment variable
+        which makes the application easier to configure in tests and local
+        development.  Postgres is used by default but tests can fall back to
+        SQLite when the database is unavailable.
+        """
+        return (
+            f"postgresql+psycopg://{self.postgres_user}:{self.postgres_password}"
+            f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+        )
 
     @property
     def database_url(self) -> str:
