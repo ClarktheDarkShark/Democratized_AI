@@ -8,7 +8,6 @@ alembic
 redis
 rq
 openai
-sentence-transformers
 httpx
 pyjwt
 gunicorn

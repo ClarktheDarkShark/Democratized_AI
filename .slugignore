@@ -1,0 +1,5 @@
+# Exclude development and non-runtime directories from slug
+frontend
+infra
+ops
+backend/tests
