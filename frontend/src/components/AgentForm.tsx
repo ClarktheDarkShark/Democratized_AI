@@ -17,9 +17,18 @@ export default function AgentForm() {
 
   return (
     <div>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="name" />
-      <textarea value={config} onChange={(e) => setConfig(e.target.value)} />
-      <button onClick={submit}>Create</button>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="name"
+        title="Enter a unique agent name"
+      />
+      <textarea
+        value={config}
+        onChange={(e) => setConfig(e.target.value)}
+        title="Provide JSON configuration for the agent"
+      />
+      <button onClick={submit} title="Submit the agent configuration">Create</button>
     </div>
   );
 }
