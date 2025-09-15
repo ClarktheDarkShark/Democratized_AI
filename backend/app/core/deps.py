@@ -6,12 +6,18 @@ from sqlalchemy.pool import StaticPool
 
 from .config import settings
 
-DATABASE_URL = os.getenv("DATABASE_URL") or (
-    f"postgresql+psycopg2://{settings.postgres_user}:{settings.postgres_password}@"
-    f"{settings.postgres_host}:{settings.postgres_port}/{settings.postgres_db}"
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL, echo=False, future=True)
+# Heroku gives postgres:// but SQLAlchemy needs postgresql:// (or postgresql+psycopg://)
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(
+    DATABASE_URL,
+    echo=False,
+    pool_pre_ping=True,   # helps avoid stale connections on Heroku
+    future=True,
+)
 try:
     with engine.connect():
         pass
