@@ -2,7 +2,7 @@ FROM python:3.11-slim
 WORKDIR /app
 COPY pyproject.toml .
 RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir fastapi uvicorn[standard] sqlalchemy psycopg2-binary alembic pydantic-settings redis rq openai sentence-transformers
+RUN pip install --no-cache-dir fastapi uvicorn[standard] sqlalchemy psycopg2-binary alembic pydantic-settings redis rq openai
 COPY app ./app
 RUN useradd -m appuser
 USER appuser
