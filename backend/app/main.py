@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from .api.v1 import agents, approvals, connectors, health, rag, runs, tools
 from .core import audit
 from .core.deps import engine
+from .core.config import settings
 from .domain.models import Base
 
 try:
@@ -16,8 +17,10 @@ app.middleware("http")(audit.audit_middleware)
 
 
 @app.get("/", include_in_schema=False)
-async def root() -> HTMLResponse:
-    """Serve a simple landing page so the app isn't 404 at root."""
+async def root():
+    """Redirect to frontend if configured, else serve minimal page."""
+    if settings.frontend_url:
+        return RedirectResponse(settings.frontend_url)
     html_content = (
         "<html><head><title>Agentic Platform API</title></head>"
         "<body><h1>Agentic Platform API</h1>"
