@@ -69,6 +69,7 @@ heroku container:release web -a agentic-platform-frontend
 | `LLM_PROVIDER` | `openai` or `oss` |
 | `LLM_API_KEY` | Provider API key placeholder |
 | `VECTOR_DIM` | Embedding dimension |
+| `FRONTEND_URL` | Base URL for the frontend used for root redirects |
 
 ## Extending
 Add new connectors or tools by implementing the abstract base classes under `backend/app/services/connectors` and `backend/app/services/tools` and registering them in the respective router.
