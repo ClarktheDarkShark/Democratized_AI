@@ -11,3 +11,4 @@ openai
 httpx
 pyjwt
 gunicorn
+requests>=2.32
