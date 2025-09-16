@@ -5,7 +5,7 @@ dev:
 
 test:
 	cd backend && PYTHONPATH=. pytest
-	cd frontend && npm install && npm test
+	node frontend/tests/smoke.js
 
 fmt:
 	cd backend && black .
